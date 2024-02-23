@@ -35,8 +35,10 @@ class Functions:
         
     def get_the_fifth_task():
         with open("files/ex5.json", "r", encoding="utf-8") as file:
-            data = list(json.load(file).items())
-            for i in data:
-                print(i)
-
-Functions.get_the_fifth_task()
+            f = list(json.load(file).items())
+            data = random.choice(f)
+            words = data[0].split()
+            values = data[1]
+            random_value = random.choice(values)
+            number_of_random_value = values.index(random_value) + 1
+            return (words, random_value, number_of_random_value)

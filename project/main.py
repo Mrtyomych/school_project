@@ -58,6 +58,10 @@ async def menu(callback: types.CallbackQuery):
         callback_data="ex_4")
     )
     builder.add(types.InlineKeyboardButton(
+        text="Задание 5",
+        callback_data="ex_5")
+    )
+    builder.add(types.InlineKeyboardButton(
         text="Главное меню",
         callback_data="menu")
     )
@@ -107,7 +111,7 @@ async def true_answer_ex_4(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
-    await callback.message.answer("Ты ахуеть как прав братишка", reply_markup=builder.as_markup())
+    await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "false_answer_ex_4")
 async def false_answer_ex_4(callback: types.CallbackQuery):
@@ -121,7 +125,57 @@ async def false_answer_ex_4(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
-    await callback.message.answer("Боже чел как мне за тебя стыдно ты больше не репер", reply_markup=builder.as_markup())
+    await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
+
+@dp.callback_query(F.data == "ex_5")
+async def send_new_ex_4(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    data = Functions.get_the_fifth_task()
+    for i in data[0]:
+        if data[0].index(i)+1 == data[2]:
+            builder.add(types.InlineKeyboardButton(
+                text=f"{i}",
+                callback_data="true_answer_ex_5")
+            )
+        else:
+            builder.add(types.InlineKeyboardButton(
+                text=f"{i}",
+                callback_data="false_answer_ex_5")
+            )
+    await callback.message.answer(
+        f"""Выберите слово, значение которого представлено ниже: \n\n{data[1]}""", 
+        reply_markup=builder.as_markup())
+
+
+@dp.callback_query(F.data == "true_answer_ex_5")
+async def true_answer_ex_4(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+                text=f"Продолжить",
+                callback_data="ex_5")
+            )
+    builder.add(types.InlineKeyboardButton(
+        text="Главное меню",
+        callback_data="menu")
+    )
+    await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
+
+@dp.callback_query(F.data == "false_answer_ex_5")
+async def false_answer_ex_4(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+                text=f"Продолжить",
+                callback_data="ex_5")
+            )
+    builder.add(types.InlineKeyboardButton(
+        text="Главное меню",
+        callback_data="menu")
+    )
+    await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
+
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
