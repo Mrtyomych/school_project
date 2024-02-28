@@ -4,7 +4,6 @@ from aiogram.filters import Command, CommandObject
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import Message
 
-import sqlite3
 from random import shuffle
 
 from BotDB import BotDB
@@ -60,6 +59,10 @@ async def menu(callback: types.CallbackQuery):
     builder.add(types.InlineKeyboardButton(
         text="Задание 5",
         callback_data="ex_5")
+    )
+    builder.add(types.InlineKeyboardButton(
+        text="Задание 9",
+        callback_data="ex_9")
     )
     builder.add(types.InlineKeyboardButton(
         text="Главное меню",
@@ -128,7 +131,7 @@ async def false_answer_ex_4(callback: types.CallbackQuery):
     await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "ex_5")
-async def send_new_ex_4(callback: types.CallbackQuery):
+async def send_new_ex_5(callback: types.CallbackQuery):
     await callback.message.delete()
     builder = InlineKeyboardBuilder()
     data = Functions.get_the_fifth_task()
@@ -149,7 +152,7 @@ async def send_new_ex_4(callback: types.CallbackQuery):
 
 
 @dp.callback_query(F.data == "true_answer_ex_5")
-async def true_answer_ex_4(callback: types.CallbackQuery):
+async def true_answer_ex_5(callback: types.CallbackQuery):
     await callback.message.delete()
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
@@ -163,7 +166,7 @@ async def true_answer_ex_4(callback: types.CallbackQuery):
     await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "false_answer_ex_5")
-async def false_answer_ex_4(callback: types.CallbackQuery):
+async def false_answer_ex_5(callback: types.CallbackQuery):
     await callback.message.delete()
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
@@ -176,6 +179,52 @@ async def false_answer_ex_4(callback: types.CallbackQuery):
     )
     await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
+
+@dp.callback_query(F.data == "ex_9")
+async def send_new_ex_9(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    data = Functions.get_the_ninth_task()
+    for i in data[1]:
+        if i == data[0]:
+            builder.add(types.InlineKeyboardButton(
+                text=f"{i}",
+                callback_data="true_answer_ex_9")
+            )
+        else:
+            builder.add(types.InlineKeyboardButton(
+                text=f"{i}",
+                callback_data="false_answer_ex_9")
+            )
+    await callback.message.answer("Выберите верно написанное слово:", reply_markup=builder.as_markup())
+
+@dp.callback_query(F.data == "true_answer_ex_9")
+async def true_answer_ex_9(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+                text=f"Продолжить",
+                callback_data="ex_9")
+            )
+    builder.add(types.InlineKeyboardButton(
+        text="Главное меню",
+        callback_data="menu")
+    )
+    await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
+
+@dp.callback_query(F.data == "false_answer_ex_9")
+async def false_answer_ex_9(callback: types.CallbackQuery):
+    await callback.message.delete()
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+                text=f"Продолжить",
+                callback_data="ex_9")
+            )
+    builder.add(types.InlineKeyboardButton(
+        text="Главное меню",
+        callback_data="menu")
+    )
+    await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
