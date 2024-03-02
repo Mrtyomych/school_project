@@ -10,7 +10,7 @@ from BotDB import BotDB
 from other_funtions import Functions
 from config import settings
 
-bot_db = BotDB("files/project.db")
+bot_db = BotDB(settings["db_path"])
 bot = Bot(token=settings['token'])
 dp = Dispatcher()
 
@@ -21,6 +21,7 @@ async def cmd_start(message: types.Message):
         text="Главное меню",
         callback_data="menu")
     )
+    bot_db.add_new_user(message.from_user.id)
     await message.answer("Выберите действие", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "menu")
@@ -28,7 +29,7 @@ async def menu(callback: types.CallbackQuery):
     await callback.message.delete()
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
-        text="Профиль и статистика",
+        text="Cтатистика",
         callback_data="profile")
     )
     builder.add(types.InlineKeyboardButton(
@@ -45,7 +46,8 @@ async def profile(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
-    await callback.message.answer("В разработке", reply_markup=builder.as_markup())
+    data = bot_db.return_user_info(callback.from_user.id)
+    await callback.message.answer(f"{data}", reply_markup=builder.as_markup())
 
 
 @dp.callback_query(F.data == "train")
@@ -114,6 +116,9 @@ async def true_answer_ex_4(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex4", "correct_ex4", True)
+
     await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "false_answer_ex_4")
@@ -128,6 +133,9 @@ async def false_answer_ex_4(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex4", "correct_ex4", False)
+
     await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "ex_5")
@@ -163,6 +171,9 @@ async def true_answer_ex_5(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex5", "correct_ex5", True)
+
     await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "false_answer_ex_5")
@@ -177,6 +188,9 @@ async def false_answer_ex_5(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex5", "correct_ex5", False)
+
     await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
 
@@ -210,6 +224,9 @@ async def true_answer_ex_9(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex9", "correct_ex9", True)
+
     await callback.message.answer("Всё верно!", reply_markup=builder.as_markup())
 
 @dp.callback_query(F.data == "false_answer_ex_9")
@@ -224,6 +241,9 @@ async def false_answer_ex_9(callback: types.CallbackQuery):
         text="Главное меню",
         callback_data="menu")
     )
+
+    bot_db.update_database(callback.from_user.id, "total_ex9", "correct_ex9", False)
+
     await callback.message.answer("К сожалению, это не верный ответ", reply_markup=builder.as_markup())
 
 async def main():

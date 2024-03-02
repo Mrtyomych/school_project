@@ -1,9 +1,10 @@
 import json
 import random
+from config import settings
 
 class Functions:
     def get_the_fourth_task() -> tuple:
-        with open("files/ex4.json", "r", encoding="utf-8") as file:
+        with open(settings["ex4_path"], "r", encoding="utf-8") as file:
             data = list(json.load(file).items())
             amount_true_answers = random.randint(2,4)
             true_answers = [random.choice(data)[0] for i in range(amount_true_answers)]  
@@ -27,7 +28,7 @@ class Functions:
             return (result, answer, list_with_wrong_anwers)
         
     def get_the_fifth_task():
-        with open("files/ex5.json", "r", encoding="utf-8") as file:
+        with open(settings["ex5_path"], "r", encoding="utf-8") as file:
             f = list(json.load(file).items())
             data = random.choice(f)
             words = data[0].split()
@@ -37,7 +38,7 @@ class Functions:
             return (words, random_value, number_of_random_value)
         
     def get_the_ninth_task():
-        with open("files/ex9.json", "r", encoding="utf-8") as file:
+        with open(settings["ex9_path"], "r", encoding="utf-8") as file:
             f = list(json.load(file).items())
             data = random.choice(f)
             correct_answer = data[0]
