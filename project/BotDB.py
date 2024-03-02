@@ -27,13 +27,14 @@ class BotDB:
         self.database.commit()
         return data
     
-    def update_database(self, user_id, ex, t_ex, is_correct):
-        total, current_ex, t_current_ex = self.cursor.execute("""SELECT number_of_completed_tasks, {}, {} FROM users WHERE id = {}""".format(ex,t_ex, user_id)).fetchone()
+    def update_database(self, user_id, t_ex, ex, is_correct):
+        total, total_correct, current_ex, t_current_ex = self.cursor.execute("""SELECT number_of_completed_tasks, number_of_correctly_completed_tasks, {}, {} FROM users WHERE id = {}""".format(ex,t_ex, user_id)).fetchone()
         if is_correct:
             total+=1
+            total_correct+=1
             current_ex+=1
             t_current_ex+=1
-            self.cursor.execute("UPDATE users SET number_of_completed_tasks = {}, {} = {}, {} = {}  WHERE id = {}".format(total, ex, current_ex, t_ex, t_current_ex, user_id))
+            self.cursor.execute("UPDATE users SET number_of_completed_tasks = {}, number_of_correctly_completed_tasks = {}, {} = {}, {} = {}  WHERE id = {}".format(total, total_correct, ex, current_ex, t_ex, t_current_ex, user_id))
         else:
             total+=1
             t_current_ex+=1
