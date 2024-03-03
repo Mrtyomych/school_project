@@ -49,15 +49,15 @@ async def profile(callback: types.CallbackQuery):
     )
     data = bot_db.return_user_info(callback.from_user.id)
     await callback.message.answer(("*Ваша статистика:*" +
-                                   "\n\t\t• Всего выполнено заданий: " + f"__{data[1]}__" +
-                                   "\n\t\t• Всего верно выполненых заданий: " + f"__{data[2]}__" +
-                                   "\n\t\t• Всего решено заданий 4: " + f"__{data[3]}__" +
-                                   "\n\t\t• Верно решено заданий 4: " + f"__{data[4]}__" +
-                                   "\n\t\t• Всего решено заданий 5: " + f"__{data[5]}__" +
-                                   "\n\t\t• Верно решено заданий 5: " + f"__{data[6]}__" +
-                                   "\n\t\t• Всего решено заданий 9: " + f"__{data[7]}__" +
-                                   "\n\t\t• Верно решено заданий 9: " + f"__{data[8]}__") 
-                                  , reply_markup=builder.as_markup(), parse_mode=ParseMode.MARKDOWN_V2)
+                                   f"\n\t\t• Всего выполнено заданий: __{data[1]}__" +
+                                   f"\n\t\t• Всего верно выполненых заданий: __{data[2]}__" +
+                                   f"\n\t\t• Всего решено заданий 4: __{data[3]}__" +
+                                   f"\n\t\t• Верно решено заданий 4: __{data[4]}__" +
+                                   f"\n\t\t• Всего решено заданий 5: __{data[5]}__" +
+                                   f"\n\t\t• Верно решено заданий 5: __{data[6]}__" +
+                                   f"\n\t\t• Всего решено заданий 9: __{data[7]}__" +
+                                   f"\n\t\t• Верно решено заданий 9: __{data[8]}__"),
+                                    reply_markup=builder.as_markup(), parse_mode=ParseMode.MARKDOWN_V2)
 
 @dp.callback_query(F.data == "train")
 async def menu(callback: types.CallbackQuery):
